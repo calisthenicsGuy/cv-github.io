@@ -1,4 +1,4 @@
-# cv-github.io
+# CVs
 
 [Radoslav Radev](https://calisthenicsguy.github.io/cv-github.io/CV-Radoslav%20Radev/)
 
