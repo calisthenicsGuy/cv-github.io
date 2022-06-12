@@ -1,5 +1,5 @@
 # CVs
 
-[Radoslav Radev](https://calisthenicsguy.github.io/cv-github.io/CV-Radoslav%20Radev/)
+[Radoslav Radev](https://bozho.codes/cv/rado/)
 
-[Bozhidar Ivanow](https://calisthenicsguy.github.io/cv-github.io/CV-Bozhidar%20Ivanow/)
+[Bozhidar Ivanow](https://bozho.codes/cv/bozho/)
