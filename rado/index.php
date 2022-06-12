@@ -1,12 +1,27 @@
+<?php
+
+$host = "localhost";
+$dbname = "svetso519_exampledb";
+$username = "svetso519_exampledb_user";
+$password = "silnaparola49";
+// Create connection
+$conn = new mysqli($host, $username, $password, $dbname);
+
+$sql = "SELECT * FROM users WHERE id=2";
+$data = $conn->query($sql)->fetch_object();
+
+$sqlSkills = "SELECT * FROM skills WHERE skills.user = $data->id";
+$skillsData = $conn->query($sqlSkills);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV | Radoslav Radev</title>
+    <title>CV | <?php echo $data->name; ?></title>
 
-    <!-- CUSTOM STYLES -->
     <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -16,12 +31,12 @@
 
         <div class="left_side">
 
-            <!-- PROFILE -->
             <div class="profile">
                 <div class="img_setting">
                     <img src="image.jpg">
                 </div>
-                <h4>Radoslav Radev</h4>
+                <h4><?php echo $data->name; ?></h4>
+                <h5><a href="https://<?php if(!is_null($data->website)) echo $data->website; ?>" target="_blank"><?php if(!is_null($data->website)) echo $data->website; ?></a></h5>
                 <button class="btn" onclick="PDF();">Download PDF</button>
             </div>
 
@@ -31,27 +46,21 @@
                 <ul>
                     <li>
                         <span class="icons">
-                            <i class="bx bx-map"></i>
-                        </span>
-                        <span class="text"><img src="LinkedIn_logo.png" alt="Italian Trulli" width="15px"><a href="https://www.linkedin.com/in/radoslav-radev-908a96235/" target="_blank" class="profileContact" style="text-decoration:none"> Linkedin Profile</a></span>
-                    </li>
-                    <li>
-                        <span class="icons">
                             <i class="bx bx-envelope"></i>
                         </span>
-                        <span class="text"><img src="Gmail_icon.png" alt="Italian Trulli" width="15px"> radevradoslav12@gmail.com</span>
+                        <span class="text"><img src="Gmail_icon.png" alt="Gmail Icon" width="15px"> <a href="mailto:<?php echo $data->email; ?>" style="text-decoration:none"> <?php echo $data->email; ?></a></span>
                     </li>
                     <li>
                         <span class="icons">
                             <i class="bx bx-phone"></i>
                         </span>
-                        <span class="text"><img src="phone-number.jpg" alt="Italian Trulli" width="16.7px"> +359 877 475 376</span>
+                        <span class="text"><img src="phone-number.jpg" alt="Phone Icon" width="16.7px"> +359 <?php echo $data->phone; ?></span>
                     </li>
                     <li>
                         <span class="icons">
                             <i class="bx bx-map"></i>
                         </span>
-                        <span class="text"><img src="gitHub.png" alt="Italian Trulli" width="15px"><a href="https://github.com/calisthenicsGuy" target="_blank" class="profileContact" style="text-decoration:none"> GitHub</a></span>
+                        <span class="text"><img src="gitHub.png" alt="Github Icon" width="15px"><a href="https://github.com/<?php echo $data->github; ?>" target="_blank" class="profileContact" style="text-decoration:none"> GitHub</a></span>
                     </li>
                 </ul>
             </div>
@@ -99,8 +108,8 @@
         <div class="right_side">
             <div class="right_items">
                 <h3 class="title">About me</h3>
-                <p>My name is Rado. I currently live and study in Varna, Bulgaria.</p>
-                <p>Date of birth: 13.12.2005</p>
+                <p><?php echo $data->about; ?>
+                    </p>
             </div>
 
             
@@ -148,37 +157,26 @@
 
             <div class="right_items">
                 <h4 class="title">Professional Skills</h4>
-                <div class="skills">
-                    <h4>C#</h4>
-                    <div class="percent">
-                        <div style="width: 80%"></div>
-                    </div>
-                </div>
-                <div class="skills">
-                    <h4>JavaScript</h4>
-                    <div class="percent">
-                        <div style="width: 50%"></div>
-                    </div>
-                </div>
-                <div class="skills">
-                    <h4>HTML</h4>
-                    <div class="percent">
-                        <div style="width: 65%"></div>
-                    </div>
-                </div>
-                <div class="skills">
-                    <h4>CSS</h4>
-                    <div class="percent">
-                        <div style="width: 40%"></div>
-                    </div>
-                </div>
+                <?php
+
+                    while($skill = $skillsData->fetch_assoc())
+                    {
+                        echo '<div class="skills">
+                        <h4>'.$skill['skill'].'</h4>
+                            <div class="percent">
+                                <div style="width: '.$skill['percent'].'%"></div>
+                            </div>
+                        </div>';
+                    }
+                ?>
             </div>
 
 
             <div class="right_items">
                 <h4 class="title">Other</h4>
-                <p>I am really into self development. Outside of programming I like to listen to podcasts and do sports such as calisthenics and football.</p>
+                <p><?php echo $data->other; ?></p>
             </div>
+
         </div>
     </div>
 

@@ -1,10 +1,26 @@
+<?php
+
+$host = "localhost";
+$dbname = "svetso519_exampledb";
+$username = "svetso519_exampledb_user";
+$password = "silnaparola49";
+// Create connection
+$conn = new mysqli($host, $username, $password, $dbname);
+
+$sql = "SELECT * FROM users WHERE id=1";
+$data = $conn->query($sql)->fetch_object();
+
+$sqlSkills = "SELECT * FROM skills WHERE skills.user = $data->id";
+$skillsData = $conn->query($sqlSkills);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV | Bozhidar Ivanov</title>
+    <title>CV | <?php echo $data->name; ?></title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -17,8 +33,8 @@
                 <div class="img_setting">
                     <img src="image.jpg">
                 </div>
-                <h4>Bozhidar Ivanov</h4>
-                <h5><a href="https://www.bozho.codes" target="_blank">bozho.codes</a></h5>
+                <h4><?php echo $data->name; ?></h4>
+                <h5><a href="https://<?php if(!is_null($data->website)) echo $data->website; ?>" target="_blank"><?php if(!is_null($data->website)) echo $data->website; ?></a></h5>
             </div>
 
             
@@ -29,19 +45,19 @@
                         <span class="icons">
                             <i class="bx bx-envelope"></i>
                         </span>
-                        <span class="text"><img src="Gmail_icon.png" alt="Gmail Icon" width="15px"> bozhoivanow@gmail.com</span>
+                        <span class="text"><img src="Gmail_icon.png" alt="Gmail Icon" width="15px"> <a href="mailto:<?php echo $data->email; ?>" style="text-decoration:none"> <?php echo $data->email; ?></a></span>
                     </li>
                     <li>
                         <span class="icons">
                             <i class="bx bx-phone"></i>
                         </span>
-                        <span class="text"><img src="phone-number.jpg" alt="Phone Icon" width="16.7px"> +359 894 470 222</span>
+                        <span class="text"><img src="phone-number.jpg" alt="Phone Icon" width="16.7px"> +359 <?php echo $data->phone; ?></span>
                     </li>
                     <li>
                         <span class="icons">
                             <i class="bx bx-map"></i>
                         </span>
-                        <span class="text"><img src="gitHub.png" alt="Github Icon" width="15px"><a href="https://github.com/notbozho" target="_blank" class="profileContact" style="text-decoration:none"> GitHub</a></span>
+                        <span class="text"><img src="gitHub.png" alt="Github Icon" width="15px"><a href="https://github.com/<?php echo $data->github; ?>" target="_blank" class="profileContact" style="text-decoration:none"> GitHub</a></span>
                     </li>
                 </ul>
             </div>
@@ -81,7 +97,7 @@
             
             <div class="right_items">
                 <h3 class="title">About me</h3>
-                <p>My name is Bozho. I'm a self-taught developer that currently lives and studies in Varna, Bulgaria.
+                <p><?php echo $data->about; ?>
                     </p>
             </div>
 
@@ -131,30 +147,24 @@
 
             <div class="right_items">
                 <h4 class="title">Professional Skills</h4>
-                <div class="skills">
-                    <h4>JavaScript</h4>
-                    <div class="percent">
-                        <div style="width: 80%"></div>
-                    </div>
-                </div>
-                <div class="skills">
-                    <h4>C#</h4>
-                    <div class="percent">
-                        <div style="width: 30%"></div>
-                    </div>
-                </div>
-                <div class="skills">
-                    <h4>Java</h4>
-                    <div class="percent">
-                        <div style="width: 35%"></div>
-                    </div>
-                </div>
+                <?php
+
+                    while($skill = $skillsData->fetch_assoc())
+                    {
+                        echo '<div class="skills">
+                        <h4>'.$skill['skill'].'</h4>
+                            <div class="percent">
+                                <div style="width: '.$skill['percent'].'%"></div>
+                            </div>
+                        </div>';
+                    }
+                ?>
             </div>
 
 
             <div class="right_items">
                 <h4 class="title">Other</h4>
-                <p>Currently exploring Minecraft Modding with Java. Outside of programming I love skateboarding .</p>
+                <p><?php echo $data->other; ?></p>
             </div>
 
         </div>
